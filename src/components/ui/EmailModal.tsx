@@ -15,38 +15,61 @@ export default function EmailModal({ isOpen, onClose, category }: EmailModalProp
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
+  // Dynamic heading based on category relevance
+  const displayCategory = category ? category : 'Engineered';
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
-    // MOCK SUBMISSION: This will later connect to your email service API
-    setTimeout(() => {
+    try {
+      // Sending data to your Google Apps Script Webhook
+      await fetch('https://script.google.com/macros/s/AKfycbxC0UsPZoGcM0qGgIgc4lqphJa-z0C1MZpiLhy-ufHaX6dDgspMA9X0GUF2rKfLb7Z7_Q/exec', {
+        method: 'POST',
+        // Using text/plain is a standard trick to bypass CORS errors on Google Apps Script
+        headers: {
+          'Content-Type': 'text/plain;charset=utf-8',
+        },
+        body: JSON.stringify({ 
+          email: email, 
+          category: displayCategory 
+        })
+      });
+
+      // Clear the form, stop the spinner, close modal, and redirect
+      setEmail('');
       setLoading(false);
       onClose();
-      // Redirecting to success page
       router.push('/success');
-    }, 1500);
+      
+    } catch (error) {
+      console.error("Error saving email:", error);
+      setLoading(false);
+      // Even if it fails, we shouldn't trap the user, but you can add error UI here later if needed
+    }
   };
-
-  // Dynamic heading based on category relevance
-  const displayCategory = category ? category : 'Engineered';
 
   return (
     <AnimatePresence>
       {isOpen && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+        <div 
+          className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
+          onClick={onClose} // ALLOWS CLOSING BY CLICKING THE BACKGROUND
+        >
           <motion.div 
             initial={{ opacity: 0, scale: 0.9, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
             className="relative w-full max-w-md bg-[var(--card)] border border-[var(--border)] p-8 rounded-3xl shadow-2xl"
+            onClick={(e) => e.stopPropagation()} // PREVENTS BACKGROUND CLICK FROM TRIGGERING INSIDE THE MODAL
           >
-            {/* Close Button */}
+            {/* Top Right Close Icon */}
             <button 
               onClick={onClose} 
-              className="absolute top-4 right-4 text-gray-500 hover:text-white transition-colors"
+              aria-label="Close modal"
+              className="absolute top-4 right-4 p-2 text-gray-500 hover:text-white hover:bg-[var(--background)] rounded-full transition-all"
             >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="6 18L18 6M6 6l12 12" />
               </svg>
             </button>
@@ -85,7 +108,17 @@ export default function EmailModal({ isOpen, onClose, category }: EmailModalProp
               </button>
             </form>
             
-            <p className="text-[10px] text-gray-500 text-center mt-4">
+            {/* Explicit Text Close Button */}
+            <div className="mt-4 text-center">
+              <button 
+                onClick={onClose}
+                className="text-sm text-gray-500 hover:text-white transition-colors"
+              >
+                No thanks, I'll pass
+              </button>
+            </div>
+            
+            <p className="text-[10px] text-gray-600 text-center mt-6">
               No spam. Unsubscribe anytime. Your data stays at Blenra.
             </p>
           </motion.div>
