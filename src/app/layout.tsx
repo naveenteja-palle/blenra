@@ -3,7 +3,7 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
-
+import { Analytics } from "@vercel/analytics/next"
 // Optimize font loading for Core Web Vitals (SEO)
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 
@@ -48,6 +48,7 @@ export default function RootLayout({
           {children}
         </main>
         <Footer />
+        <Analytics />
       </body>
     </html>
   );
