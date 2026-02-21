@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+  <defs>
+    <linearGradient id="blenraGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3b82f6" />
+      <stop offset="100%" stop-color="#8b5cf6" />
+    </linearGradient>
+  </defs>
+  <path d="M6 4h7.5a5.5 5.5 0 0 1 2.5 10.4A5.5 5.5 0 0 1 13.5 20H6V4zm3 6h4.5a2.5 2.5 0 1 0 0-5H9v5zm0 7h4.5a2.5 2.5 0 1 0 0-5H9v5z" fill="url(#blenraGrad)" />
+  <circle cx="19" cy="5" r="3" fill="#60a5fa" />
+</svg>
