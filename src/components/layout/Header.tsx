@@ -34,10 +34,10 @@ export default function Header() {
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-8">
-          <Link href="/" className="text-sm font-medium text-gray-300 hover:text-white transition-colors">Home</Link>
+          <Link href="/" className="text-sm font-medium text-[var(--primary)] hover:text-white transition-colors">Home</Link>
           
           {/* THE NEW EXPLORE LINK */}
-          <Link href="/explore" className="text-sm font-medium text-[var(--primary)] hover:text-blue-400 transition-colors">Explore</Link>
+          <Link href="/explore" className="text-sm font-medium text-gray-300 hover:text-blue-400 transition-colors">Explore</Link>
           
           <div className="relative group">
             <span className="text-sm font-medium text-gray-300 group-hover:text-white transition-colors cursor-pointer py-2">Categories ▾</span>
@@ -77,10 +77,10 @@ export default function Header() {
       {/* Mobile Dropdown Menu */}
       {isMobileMenuOpen && (
         <div className="md:hidden border-t border-[var(--border)] bg-[var(--card)] px-4 py-6 space-y-4 shadow-lg">
-          <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="block text-base font-medium text-white">Home</Link>
+          <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="block text-base font-medium text-[var(--primary)">Home</Link>
           
           {/* MOBILE EXPLORE LINK */}
-          <Link href="/explore" onClick={() => setIsMobileMenuOpen(false)} className="block text-base font-medium text-[var(--primary)]">Explore</Link>
+          <Link href="/explore" onClick={() => setIsMobileMenuOpen(false)} className="block text-base font-medium text-white]">Explore</Link>
           
           <Link href="/about" onClick={() => setIsMobileMenuOpen(false)} className="block text-base font-medium text-white">About Us</Link>
           

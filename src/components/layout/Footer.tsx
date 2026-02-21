@@ -1,7 +1,12 @@
+'use client';
+
+import { useState } from 'react';
 import Link from 'next/link';
+import EmailModal from '../ui/EmailModal';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
     <footer className="border-t border-[var(--border)] bg-[var(--card)] pt-16 pb-8 mt-auto">
@@ -23,7 +28,15 @@ export default function Footer() {
               <li><Link href="/" className="text-sm text-gray-400 hover:text-[var(--primary)] transition-colors">Home</Link></li>
               <li><Link href="/about" className="text-sm text-gray-400 hover:text-[var(--primary)] transition-colors">About Us</Link></li>
               <li><Link href="/search" className="text-sm text-gray-400 hover:text-[var(--primary)] transition-colors">Search Prompts</Link></li>
-              <li><Link href="/pricing" className="text-sm text-gray-400 hover:text-[var(--primary)] transition-colors">Download CSV</Link></li>
+              {/* Updated to trigger the newsletter modal */}
+              <li>
+                <button 
+                  onClick={() => setIsModalOpen(true)}
+                  className="text-sm text-gray-400 hover:text-[var(--primary)] transition-colors text-left"
+                >
+                  Weekly Newsletter
+                </button>
+              </li>
             </ul>
           </div>
 
@@ -59,6 +72,9 @@ export default function Footer() {
         </div>
 
       </div>
+
+      {/* MODAL COMPONENT */}
+      <EmailModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </footer>
   );
 }
