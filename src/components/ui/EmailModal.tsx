@@ -2,21 +2,29 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation'; // <-- ADDED usePathname
 
 interface EmailModalProps {
   isOpen: boolean;
   onClose: () => void;
-  category?: string; // Optional: helps personalize the message
+  category?: string; 
 }
 
 export default function EmailModal({ isOpen, onClose, category }: EmailModalProps) {
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const pathname = usePathname() || ''; // <-- GETS THE CURRENT URL
 
-  // Dynamic heading based on category relevance
-  const displayCategory = category ? category : 'Engineered';
+  // AUTOMATICALLY DETECT CATEGORY FROM URL
+  let autoCategory = 'Engineered';
+  if (pathname.includes('cloud-devops')) autoCategory = 'Cloud & DevOps';
+  else if (pathname.includes('web-components')) autoCategory = 'Web Components';
+  else if (pathname.includes('social-media')) autoCategory = 'Social Media';
+  else if (pathname.includes('ai-portraits')) autoCategory = 'AI Portraits';
+
+  // Use the prop if passed, otherwise use the auto-detected one
+  const displayCategory = category || autoCategory;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -26,17 +34,15 @@ export default function EmailModal({ isOpen, onClose, category }: EmailModalProp
       // Sending data to your Google Apps Script Webhook
       await fetch('https://script.google.com/macros/s/AKfycbxC0UsPZoGcM0qGgIgc4lqphJa-z0C1MZpiLhy-ufHaX6dDgspMA9X0GUF2rKfLb7Z7_Q/exec', {
         method: 'POST',
-        // Using text/plain is a standard trick to bypass CORS errors on Google Apps Script
         headers: {
           'Content-Type': 'text/plain;charset=utf-8',
         },
         body: JSON.stringify({ 
           email: email, 
-          category: displayCategory 
+          category: displayCategory // <-- SENDING THE DETECTED CATEGORY
         })
       });
 
-      // Clear the form, stop the spinner, close modal, and redirect
       setEmail('');
       setLoading(false);
       onClose();
@@ -45,7 +51,6 @@ export default function EmailModal({ isOpen, onClose, category }: EmailModalProp
     } catch (error) {
       console.error("Error saving email:", error);
       setLoading(false);
-      // Even if it fails, we shouldn't trap the user, but you can add error UI here later if needed
     }
   };
 
@@ -54,16 +59,15 @@ export default function EmailModal({ isOpen, onClose, category }: EmailModalProp
       {isOpen && (
         <div 
           className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
-          onClick={onClose} // ALLOWS CLOSING BY CLICKING THE BACKGROUND
+          onClick={onClose} 
         >
           <motion.div 
             initial={{ opacity: 0, scale: 0.9, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
             className="relative w-full max-w-md bg-[var(--card)] border border-[var(--border)] p-8 rounded-3xl shadow-2xl"
-            onClick={(e) => e.stopPropagation()} // PREVENTS BACKGROUND CLICK FROM TRIGGERING INSIDE THE MODAL
+            onClick={(e) => e.stopPropagation()} 
           >
-            {/* Top Right Close Icon */}
             <button 
               onClick={onClose} 
               aria-label="Close modal"
@@ -108,7 +112,6 @@ export default function EmailModal({ isOpen, onClose, category }: EmailModalProp
               </button>
             </form>
             
-            {/* Explicit Text Close Button */}
             <div className="mt-4 text-center">
               <button 
                 onClick={onClose}
