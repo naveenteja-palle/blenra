@@ -5,24 +5,25 @@ import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import CookieBanner from '@/components/ui/CookieBanner';
 import { Analytics } from "@vercel/analytics/next";
-import { SpeedInsights } from "@vercel/speed-insights/next"; // <-- ADDED THIS
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 // Optimize font loading for Core Web Vitals (SEO)
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 
 // Global SEO Configuration
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'),
+  // FIX 1: Changed fallback to production domain
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://blenra.com'),
   title: {
     default: 'Blenra | The Ultimate AI Prompt Directory',
-    template: '%s | Blenra', // Dynamically inserts nested page titles
+    // FIX 2: Removed the template string to prevent double "| Blenra | Blenra"
   },
   description: 'Search 10,000+ optimized AI prompts for infrastructure, frontend code, and content scaling. Engineered for modern developers and creators.',
   keywords: ['AI prompts', 'programmatic SEO', 'ChatGPT prompts', 'Gemini prompts', 'developer tools'],
   openGraph: {
     title: 'Blenra | Engineered AI Prompts',
     description: 'The Ultimate Library of Engineered AI Prompts for modern developers and creators.',
-    url: '/',
+    // FIX 3: Removed url: '/' so Next.js dynamically assigns the correct route to each page
     siteName: 'Blenra',
     locale: 'en_US',
     type: 'website',
@@ -57,7 +58,7 @@ export default function RootLayout({
         <Footer />
         <CookieBanner />
         <Analytics />
-        <SpeedInsights /> {/* <-- ADDED THIS */}
+        <SpeedInsights />
       </body>
     </html>
   );
