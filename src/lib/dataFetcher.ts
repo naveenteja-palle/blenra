@@ -82,3 +82,16 @@ export async function searchPrompts(query: string): Promise<PromptItem[]> {
     p.basePrompt.toLowerCase().includes(lowerQuery)
   );
 }
+
+// Add to the bottom of src/lib/dataFetcher.ts
+
+// Function 5: Get prompts by their specific tag
+export async function getPromptsByTag(tagSlug: string): Promise<PromptItem[]> {
+  const prompts = await getAllPrompts();
+  const formattedTag = `#${tagSlug.toLowerCase()}`;
+  
+  return prompts.filter(p => 
+    p.tag.toLowerCase() === formattedTag || 
+    p.tag.toLowerCase() === tagSlug.toLowerCase()
+  );
+}
