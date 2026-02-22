@@ -3,7 +3,10 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
-import { Analytics } from "@vercel/analytics/next"
+import CookieBanner from '@/components/ui/CookieBanner';
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next"; // <-- ADDED THIS
+
 // Optimize font loading for Core Web Vitals (SEO)
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 
@@ -33,6 +36,10 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
+  // Google Search Console Verification
+  verification: {
+    google: '4F8kc1WC1lbv3tQTvRrzRi2bQwpcZunOqhCeNqOdVf4',
+  },
 };
 
 export default function RootLayout({
@@ -48,7 +55,9 @@ export default function RootLayout({
           {children}
         </main>
         <Footer />
+        <CookieBanner />
         <Analytics />
+        <SpeedInsights /> {/* <-- ADDED THIS */}
       </body>
     </html>
   );
