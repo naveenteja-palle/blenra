@@ -1,10 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Enables automatic UI optimization for blazing fast rendering
-  experimental: {
-    reactCompiler: true,
-  },
+  // The React Compiler is now stable in Next 16, so it sits at the root
+  reactCompiler: true,
   
   // Intercepts traffic to empty root folders and sends it to your Explore hub
   async redirects() {
@@ -12,7 +10,7 @@ const nextConfig: NextConfig = {
       {
         source: '/category',
         destination: '/explore',
-        permanent: true, // Tells Google this is your official structure
+        permanent: true,
       },
       {
         source: '/tag',
