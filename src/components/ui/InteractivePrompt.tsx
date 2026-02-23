@@ -1,7 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import Link from 'next/link'; // <-- NEW: Imported Next.js Link
+import Link from 'next/link';
+import Image from 'next/image'; // <-- NEW: Imported Next.js Image component
 import CopyButton from '@/components/ui/CopyButton';
 import { PromptItem } from '@/types/prompt';
 
@@ -35,7 +36,6 @@ export default function InteractivePrompt({ promptData }: { promptData: PromptIt
       {/* LEFT COLUMN: Context & Interactive Variables */}
       <div className="lg:col-span-4 flex flex-col gap-8">
         <div>
-          {/* THE NEW FIX: Flex container holding both the AI Badge and the Clickable Tag */}
           <div className="flex flex-wrap items-center gap-3 mb-4">
             <div className="inline-flex items-center rounded-full bg-[var(--card)] border border-[var(--border)] px-3 py-1 text-xs font-semibold text-[var(--primary)]">
               Optimized for: {promptData.targetAI}
@@ -116,37 +116,40 @@ export default function InteractivePrompt({ promptData }: { promptData: PromptIt
         <div className="flex flex-wrap items-center gap-3 px-1 -mt-2">
           <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Launch In:</span>
           
-          <a 
-            href="https://chatgpt.com/" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-[var(--border)] bg-[var(--card)] text-xs font-medium text-gray-300 hover:text-white hover:border-gray-500 transition-all"
-          >
+          <a href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-[var(--border)] bg-[var(--card)] text-xs font-medium text-gray-300 hover:text-white hover:border-gray-500 transition-all">
             ChatGPT
           </a>
-          
-          <a 
-            href="https://claude.ai/new" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-[var(--border)] bg-[var(--card)] text-xs font-medium text-gray-300 hover:text-white hover:border-gray-500 transition-all"
-          >
+          <a href="https://claude.ai/new" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-[var(--border)] bg-[var(--card)] text-xs font-medium text-gray-300 hover:text-white hover:border-gray-500 transition-all">
             Claude
           </a>
-          
-          <a 
-            href="https://gemini.google.com/app" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-[var(--border)] bg-[var(--card)] text-xs font-medium text-gray-300 hover:text-white hover:border-gray-500 transition-all"
-          >
+          <a href="https://gemini.google.com/app" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-[var(--border)] bg-[var(--card)] text-xs font-medium text-gray-300 hover:text-white hover:border-gray-500 transition-all">
             Gemini
           </a>
         </div>
 
-        {/* Example Output Box */}
+        {/* NEW ADDITION: Expected Visual Output Box */}
+        {promptData.imageUrl && (
+          <div className="bg-[var(--card)] border border-[var(--border)] rounded-xl overflow-hidden shadow-sm">
+            <div className="px-6 py-3 border-b border-[var(--border)] bg-black/20">
+              <h3 className="text-sm font-bold tracking-wider text-[var(--primary)] uppercase">
+                Expected Visual Output
+              </h3>
+            </div>
+            <div className="relative w-full h-[300px] sm:h-[450px]">
+              <Image 
+                src={promptData.imageUrl} 
+                alt={`Expected visual output for ${promptData.title}`}
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, 800px"
+              />
+            </div>
+          </div>
+        )}
+
+        {/* Example Text Output Box */}
         <div className="bg-[var(--card)] border border-[var(--border)] rounded-xl p-6">
-          <h3 className="text-sm font-bold tracking-wider text-[var(--primary)] mb-2">Example Output</h3>
+          <h3 className="text-sm font-bold tracking-wider text-[var(--primary)] mb-2 uppercase">Example Text Output</h3>
           <p className="text-sm text-gray-400 italic border-l-2 border-[var(--border)] pl-4">
             "{promptData.exampleOutput}"
           </p>

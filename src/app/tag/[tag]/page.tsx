@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import PromptCard from '@/components/ui/PromptCard';
 import { getPromptsByTag } from '@/lib/dataFetcher';
 import { notFound } from 'next/navigation';
+import PaginatedGrid from '@/components/ui/PaginatedGrid'; // <-- NEW IMPORT
 
 // 1. Dynamic SEO Generation for Tags
 export async function generateMetadata({ params }: { params: Promise<{ tag: string }> }): Promise<Metadata> {
@@ -50,14 +50,8 @@ export default async function TagPage({ params }: { params: Promise<{ tag: strin
 
       {/* Conditional Rendering */}
       {tagPrompts.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {tagPrompts.map((prompt) => (
-            <PromptCard 
-              key={prompt.id}
-              prompt={prompt}
-            />
-          ))}
-        </div>
+        /* THE FIX: Replaced the static grid with our new high-performance PaginatedGrid */
+        <PaginatedGrid prompts={tagPrompts} itemsPerPage={12} />
       ) : (
         <div className="text-center py-20 bg-[var(--card)] border border-[var(--border)] rounded-2xl shadow-sm">
           <span className="text-4xl mb-4 block" aria-hidden="true">🚧</span>

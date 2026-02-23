@@ -43,7 +43,7 @@ async function loadDatabase(): Promise<PromptItem[]> {
         variables: JSON.parse(row.variables || '[]'),
         basePrompt: row.basePrompt,
         exampleOutput: row.exampleOutput,
-      };
+imageUrl: row.imageUrl && row.imageUrl.trim() !== '' ? row.imageUrl.trim() : undefined,      };
     }) as PromptItem[];
 
     return cachedPrompts;

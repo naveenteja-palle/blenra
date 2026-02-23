@@ -10,4 +10,5 @@ export interface PromptItem {
   variables: string[];
   basePrompt: string;
   exampleOutput: string;
+  imageUrl?: string;
 }

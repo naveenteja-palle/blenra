@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import PromptCard from '@/components/ui/PromptCard';
 import { getPromptsByCategory } from '@/lib/dataFetcher';
+import PaginatedGrid from '@/components/ui/PaginatedGrid'; // <-- NEW IMPORT
 
 // 1. Dynamic SEO Generation
 export async function generateMetadata({ params }: { params: Promise<{ category: string }> }): Promise<Metadata> {
@@ -45,15 +45,8 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
 
       {/* Conditional Rendering based on Database Results */}
       {categoryPrompts.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {categoryPrompts.map((prompt) => (
-            // THE FIX: We now pass the entire 'prompt' object to bypass the firewall
-            <PromptCard 
-              key={prompt.id}
-              prompt={prompt}
-            />
-          ))}
-        </div>
+        /* THE FIX: We pass the data to our client-side pagination engine to prevent server crashes on mobile */
+        <PaginatedGrid prompts={categoryPrompts} itemsPerPage={12} />
       ) : (
         /* The graceful fallback if the database has 0 items for this category */
         <div className="text-center py-20 bg-[var(--card)] border border-[var(--border)] rounded-2xl shadow-sm">
