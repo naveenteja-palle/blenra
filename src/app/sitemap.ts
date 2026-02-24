@@ -40,15 +40,32 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.7,
   }));
 
-  // 4. Dynamic Prompt Pages (The pSEO Engine with Image SEO)
-  const promptRoutes = prompts.map((prompt) => ({
-    url: `${baseUrl}/prompts/${prompt.categorySlug}/${prompt.slug}`,
-    lastModified: new Date().toISOString(),
-    changeFrequency: 'weekly' as const,
-    priority: 0.9, 
-    // Add the image URL to the sitemap entry
-    images: prompt.imageUrl ? [`${baseUrl}${prompt.imageUrl}`] : undefined,
-  }));
+  // 4. Dynamic Prompt Pages
+  const promptRoutes = prompts.map((prompt) => {
+    const imagePath = prompt.imageUrl; 
+    
+    // SANITY CHECK: Ensure it's not a title/sentence. 
+    // It should exist, be a string, and ideally not contain spaces.
+    // We also check if it contains common image extensions or starts with a slash.
+    const isValidImagePath = 
+      imagePath && 
+      typeof imagePath === 'string' && 
+      !imagePath.includes(' ') && 
+      (imagePath.startsWith('/') || imagePath.startsWith('http') || imagePath.match(/\.(jpg|jpeg|png|webp|gif)$/i));
+
+    // Only format the URL if it passed the sanity check
+    const formattedImageUrl = isValidImagePath 
+      ? `${baseUrl}${imagePath.startsWith('/') ? '' : '/'}${imagePath}`
+      : undefined;
+
+    return {
+      url: `${baseUrl}/prompts/${prompt.categorySlug}/${prompt.slug}`,
+      lastModified: new Date().toISOString(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.9, 
+      images: formattedImageUrl ? [formattedImageUrl] : undefined,
+    };
+  });
 
   // Return the combined array
   return [...staticRoutes, ...categoryRoutes, ...tagRoutes, ...promptRoutes];
