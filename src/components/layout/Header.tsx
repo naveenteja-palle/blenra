@@ -14,6 +14,7 @@ export default function Header() {
     { name: 'Web Components', path: '/category/web-components' },
     { name: 'Social Media', path: '/category/social-media' },
     { name: 'AI Portraits', path: '/category/ai-portraits' },
+    { name: 'Virtual Photoshoots', path: '/category/virtual-photoshoots' },
   ];
 
   return (

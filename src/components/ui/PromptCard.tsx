@@ -14,16 +14,19 @@ export default function PromptCard({ prompt }: { prompt: PromptItem }) {
   // STRICT URL VALIDATION: Ensure the image string is safe for Next.js
   const isValidImage = imageUrl ? (imageUrl.startsWith('/') || imageUrl.startsWith('http')) : false;
 
-  // The condition: Only show the image if it's "ai-portraits" AND the URL is safely formatted
-  const showImage = categorySlug === 'ai-portraits' && isValidImage;
+  // The condition: Show the image if it belongs to an image-based category AND the URL is safely formatted
+  const showImage = (categorySlug === 'ai-portraits' || categorySlug === 'virtual-photoshoots') && isValidImage;
+  
+  // Layout modifier: Check if this card should use the Instagram-style vertical layout
+  const isVertical = categorySlug === 'virtual-photoshoots';
 
   return (
     <Link href={`/prompts/${categorySlug}/${slug}`} className="group block h-full">
       <article className="flex flex-col h-full bg-[var(--card)] border border-[var(--border)] rounded-2xl hover:border-[var(--primary)] transition-all duration-300 hover:shadow-lg hover:shadow-[var(--primary)]/10 overflow-hidden cursor-pointer">
         
-        {/* CONDITIONAL IMAGE RENDER */}
+        {/* CONDITIONAL IMAGE RENDER WITH DYNAMIC ASPECT RATIO */}
         {showImage && (
-          <div className="relative w-full h-48 sm:h-56 border-b border-[var(--border)] overflow-hidden bg-black/20">
+          <div className={`relative w-full border-b border-[var(--border)] overflow-hidden bg-black/20 ${isVertical ? 'aspect-[9/16]' : 'aspect-video sm:h-56'}`}>
             <Image 
               src={imageUrl as string} 
               alt={`AI generated output for ${title}`} 

@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import Image from 'next/image'; // <-- NEW: Imported Next.js Image component
+import Image from 'next/image';
 import CopyButton from '@/components/ui/CopyButton';
 import { PromptItem } from '@/types/prompt';
 
@@ -29,6 +29,9 @@ export default function InteractivePrompt({ promptData }: { promptData: PromptIt
       livePromptText = livePromptText.replace(regex, userValue);
     }
   });
+
+  // Layout modifier for vertical images
+  const isVertical = promptData.categorySlug === 'virtual-photoshoots';
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
@@ -69,15 +72,17 @@ export default function InteractivePrompt({ promptData }: { promptData: PromptIt
               promptData.variables.map((variable, i) => {
                 // Remove the brackets for the input label (e.g., "[BUDGET]" -> "BUDGET")
                 const cleanLabel = variable.replace(/[\[\]]/g, '');
+                // Check if the variable is asking for an image URL to improve the placeholder UX
+                const isImageUrl = cleanLabel.includes('URL') || cleanLabel.includes('IMAGE');
                 
                 return (
                   <div key={i} className="flex flex-col gap-1.5">
                     <label className="text-xs font-medium text-gray-300 flex items-center gap-1.5">
-                      <span className="text-[var(--primary)]">✦</span> {cleanLabel}
+                      <span className="text-[var(--primary)]">✦</span> {cleanLabel.replace(/_/g, ' ')}
                     </label>
                     <input
                       type="text"
-                      placeholder={`e.g. your ${cleanLabel.toLowerCase()}`}
+                      placeholder={isImageUrl ? "Paste image URL here (e.g. https://...)" : `e.g. your ${cleanLabel.toLowerCase().replace(/_/g, ' ')}`}
                       value={inputValues[variable] || ''}
                       onChange={(e) => handleInputChange(variable, e.target.value)}
                       className="w-full bg-[#0a0d12] border border-[var(--border)] text-sm text-gray-200 rounded-lg px-3 py-2.5 focus:outline-none focus:border-[var(--primary)] focus:ring-1 focus:ring-[var(--primary)] transition-all placeholder:text-gray-600"
@@ -127,7 +132,7 @@ export default function InteractivePrompt({ promptData }: { promptData: PromptIt
           </a>
         </div>
 
-        {/* NEW ADDITION: Expected Visual Output Box */}
+        {/* UPDATED: Expected Visual Output Box */}
         {promptData.imageUrl && (
           <div className="bg-[var(--card)] border border-[var(--border)] rounded-xl overflow-hidden shadow-sm">
             <div className="px-6 py-3 border-b border-[var(--border)] bg-black/20">
@@ -135,12 +140,14 @@ export default function InteractivePrompt({ promptData }: { promptData: PromptIt
                 Expected Visual Output
               </h3>
             </div>
-            <div className="relative w-full h-[300px] sm:h-[450px]">
+            
+            {/* Dynamic Image Container based on category */}
+            <div className={`relative w-full ${isVertical ? 'aspect-[9/16] max-h-[75vh] mx-auto bg-black/40' : 'aspect-video sm:h-[450px]'}`}>
               <Image 
                 src={promptData.imageUrl} 
                 alt={`Expected visual output for ${promptData.title}`}
                 fill
-                className="object-cover"
+                className={isVertical ? "object-contain" : "object-cover"}
                 sizes="(max-width: 768px) 100vw, 800px"
               />
             </div>

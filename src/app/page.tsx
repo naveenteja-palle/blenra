@@ -40,6 +40,7 @@ export default async function HomePage() {
             <Link href="/category/web-components" className="px-4 py-2 rounded-full border border-[var(--border)] bg-[var(--card)] text-sm font-medium hover:border-[var(--primary)] hover:text-[var(--primary)] transition-all">🧊 Web Components</Link>
             <Link href="/category/social-media" className="px-4 py-2 rounded-full border border-[var(--border)] bg-[var(--card)] text-sm font-medium hover:border-[var(--primary)] hover:text-[var(--primary)] transition-all">📱 Social Media</Link>
             <Link href="/category/ai-portraits" className="px-4 py-2 rounded-full border border-[var(--border)] bg-[var(--card)] text-sm font-medium hover:border-[var(--primary)] hover:text-[var(--primary)] transition-all">👔 AI Portraits</Link>
+            <Link href="/category/virtual-photoshoots" className="px-4 py-2 rounded-full border border-[var(--border)] bg-[var(--card)] text-sm font-medium hover:border-[var(--primary)] hover:text-[var(--primary)] transition-all">📷 Virtual Photoshoots</Link>
           </nav>
         </div>
       </section>
