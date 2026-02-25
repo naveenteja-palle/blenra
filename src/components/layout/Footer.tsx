@@ -15,7 +15,15 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-8 mb-12">
           {/* Brand Column */}
           <div className="md:col-span-1">
-            <span className="text-2xl font-bold tracking-tight text-white mb-4 block">Blenra</span>
+            {/* UPDATED: Added Logo matching the Header */}
+            <Link href="/" className="flex items-center gap-3 group mb-4 w-fit">
+              <img 
+                src="/images/logo.png" 
+                alt="Blenra Logo" 
+                className="w-12 h-12 object-contain group-hover:scale-105 transition-transform duration-300"
+              />
+              <span className="text-2xl font-bold tracking-tight text-white">Blenra</span>
+            </Link>
             <p className="text-sm text-gray-400 leading-relaxed">
               The ultimate library of engineered AI prompts. Scale your workflows, code, and content with precision.
             </p>
@@ -48,6 +56,7 @@ export default function Footer() {
               <li><Link href="/category/web-components" className="text-sm text-gray-400 hover:text-[var(--primary)] transition-colors">Web Components</Link></li>
               <li><Link href="/category/social-media" className="text-sm text-gray-400 hover:text-[var(--primary)] transition-colors">Social Media</Link></li>
               <li><Link href="/category/ai-portraits" className="text-sm text-gray-400 hover:text-[var(--primary)] transition-colors">AI Portraits</Link></li>
+              <li><Link href="/category/virtual-photoshoots" className="text-sm text-gray-400 hover:text-[var(--primary)] transition-colors">Virtual Photoshoots</Link></li>
             </ul>
           </div>
 

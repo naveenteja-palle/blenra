@@ -23,16 +23,13 @@ export default function Header() {
         <div className="container mx-auto flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
           
           {/* Brand Logo & Name */}
-          <Link href="/" className="flex items-center gap-2 group">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-8 h-8 group-hover:scale-105 transition-transform duration-300">
-              <defs>
-                <linearGradient id="navGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="#3b82f6" /><stop offset="100%" stopColor="#8b5cf6" />
-                </linearGradient>
-              </defs>
-              <path d="M6 4h7.5a5.5 5.5 0 0 1 2.5 10.4A5.5 5.5 0 0 1 13.5 20H6V4zm3 6h4.5a2.5 2.5 0 1 0 0-5H9v5zm0 7h4.5a2.5 2.5 0 1 0 0-5H9v5z" fill="url(#navGrad)" />
-              <circle cx="19" cy="5" r="3" fill="#60a5fa" />
-            </svg>
+          <Link href="/" className="flex items-center gap-3 group">
+            {/* UPDATED: Increased size to w-12 h-12 */}
+            <img 
+              src="/images/logo.png" 
+              alt="Blenra Logo" 
+              className="w-12 h-12 object-contain group-hover:scale-105 transition-transform duration-300"
+            />
             <span className="text-2xl font-bold tracking-tight text-white">Blenra</span>
           </Link>
 
@@ -62,7 +59,7 @@ export default function Header() {
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
             </Link>
 
-            {/* NEW: Desktop CTA Button */}
+            {/* Desktop CTA Button */}
             <button
               onClick={() => setIsModalOpen(true)}
               className="hidden md:block px-4 py-2 text-sm font-bold bg-blue-600 hover:bg-blue-700 text-white rounded-full transition-all"
@@ -105,7 +102,7 @@ export default function Header() {
               </div>
             </div>
 
-            {/* NEW: Mobile CTA Button */}
+            {/* Mobile CTA Button */}
             <div className="pt-6 border-t border-[var(--border)]">
               <button
                 onClick={() => {
